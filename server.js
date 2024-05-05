@@ -8,38 +8,16 @@ const app =  express();
 
 dotenv.config();
 
-connectDatabase(() => {
-    initial();
-    // console.log(`[v] Successfully added some documentation to ${process.env.DB_NAME} database`);
-    app.listen(5038, () => {
-        console.log("[v] [connectDatabase] Backend server is running on port 5038");
-    });
-});
-
 app.use(express.json());
 app.use("/status", serverRoute);
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 
-app.get('/', function (req, res) {
-    res.send('Hello World')
-});
-
-app.get("/api/test", (req, res) => {
-	console.log("test is successful");
-    res.send("test is successful");
-});
-
-app.get('/api/GetALL', (req, res) => {
-    const database = getDatabase();
-    database.collection(process.env.DB_COLLECTION_MAIN).find({}).toArray((err, result) => {
-        if (err) {
-            console.error("[x] Error fetching data:", err);
-            res.status(500).send("Internal Server Error");
-            return;
-        }
-        console.log("[>] /api/GetALL");
-        res.send(result);
+connectDatabase(() => {
+    initial();
+    // console.log(`[v] Successfully added some documentation to ${process.env.DB_NAME} database`);
+    app.listen(5038, () => {
+        console.log("[v] [connectDatabase] Backend server is running on port 5038");
     });
 });
 
@@ -63,6 +41,10 @@ function initial() {
     // });
     console.log("[v] Initial function is called");
 }
+
+app.get('/', function (req, res) {
+    res.send('Hello World，噗呲噗呲，咚噠噠噠')
+});
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
