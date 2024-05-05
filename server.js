@@ -1,6 +1,7 @@
 const dotenv = require("dotenv");
 const express = require("express");
 const { connectDatabase, getDatabase } = require("./app/models");
+const serverRoute = require("./app/routes/server.routes");
 const userRoute = require("./app/routes/user.routes");
 const authRoute = require("./app/routes/auth.routes");
 const app =  express();
@@ -9,13 +10,14 @@ dotenv.config();
 
 connectDatabase(() => {
     initial();
-    console.log(`[v] Successfully added some documentation to ${process.env.DB_NAME} database`);
+    // console.log(`[v] Successfully added some documentation to ${process.env.DB_NAME} database`);
     app.listen(5038, () => {
         console.log("[v] [connectDatabase] Backend server is running on port 5038");
     });
 });
 
 app.use(express.json());
+app.use("/status", serverRoute);
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 
