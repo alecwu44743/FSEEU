@@ -68,7 +68,7 @@ const signin = (req, res) => {
                     process.env.JWT_SEC,
                     { expiresIn: "3d" }
                 )
-
+                
                 _userrole = user.roles;
                 
                 if(_userrole == "user"){
