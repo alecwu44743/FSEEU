@@ -45,9 +45,12 @@ const signin = (req, res) => {
 
     const database = getDatabase();
     const userinfo_collection = database.collection(process.env.DB_COLLECTION_USERINFO);
+    const usertoken_collection = database.collection(process.env.DB_COLLECTION_USERTOKEN);
+    const moderatortoken_collection = database.collection(process.env.DB_COLLECTION_MODERATORTOKEN);
     
     _username = req.body.username;
     _password = req.body.password;
+
     userinfo_collection.findOne({ username: _username }, (err, user) => {
         if (err) {
             console.error("[x] Error finding user:", err);
@@ -57,22 +60,75 @@ const signin = (req, res) => {
                 console.log("[v] User found:", user);
                 const hashedPassword = CryptoJS.AES.decrypt(user.password, process.env.JWT_SEC);
                 const orginalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
-
+                
                 orginalPassword !== _password && res.status(401).json("Wrong Credentials");
                 
                 const accessToken = jwt.sign(
                     {id: user._id}, 
                     process.env.JWT_SEC,
                     { expiresIn: "3d" }
-                );
+                )
 
-                res.status(200).send({
-                    id: user._id,
-                    username: user.username,
-                    email: user.email,
-                    roles: user.roles,
-                    accessToken: accessToken
-                });
+                _userrole = user.roles;
+                
+                if(_userrole == "user"){
+                    usertoken_collection.insertOne({
+                        username: user.username,
+                        token: accessToken
+                    }, (err, token) => {
+                        if (err) {
+                            console.error("[x] Error inserting documents: ", err);
+                            res.status(500).send({ message: "Error inserting documents: " + err });
+                        }
+                        else{
+                            console.log(`[v] ${user.username}'s documents added successfully`);
+                            console.log(`[v] ${user.username}'s token added successfully`);
+                            res.status(200).send({
+                                id: user._id,
+                                username: user.username,
+                                email: user.email,
+                                roles: user.roles,
+                                accessToken: accessToken
+                            });
+                        }
+                    });
+                }
+                else if(_userrole == "moderator"){
+                    moderatortoken_collection.insertOne({
+                        username: user.username,
+                        token: accessToken
+                    }, (err, token) => {
+                        if (err) {
+                            console.error("[x] Error inserting documents: ", err);
+                            res.status(500).send({ message: "Error inserting documents: " + err });
+                        }
+                        else{
+                            console.log(`[v] ${user.username}'s documents added successfully`);
+                            console.log(`[v] ${user.username}'s token added successfully`);
+                            res.status(200).send({
+                                id: user._id,
+                                username: user.username,
+                                email: user.email,
+                                roles: user.roles,
+                                accessToken: accessToken
+                            });
+                        }
+                    });
+                }
+                else{
+                    console.log("[x] Error: User role not found");
+                    console.log(`[x] ${_username}'s documents will be deleted`);
+                    userinfo_collection.deleteOne({ username: _username }, (err, user) => {
+                        if (err) {
+                            console.error("[x] Error deleting documents: ", err);
+                            res.status(500).send({ message: "Error deleting documents: " + err });
+                        }
+                        else{
+                            console.log(`[v] ${_username}'s documents deleted successfully`);
+                            res.status(404).send({ message: `Error: User/role-[${_userrole}] not found and we have deleted ${_username}'s documents` });
+                        }
+                    });
+                }
             } else {
                 console.log("[x] Error: User not found");
                 res.status(404).send({ message: `Error: User:${_username} not found` });
