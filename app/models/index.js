@@ -9,11 +9,11 @@ let database;
 function connectDatabase(callback) {
     MongoClient.connect(DBCONNECT, (error, client) => {
         if (error) {
-            console.error("Error connecting to database:", error);
+            console.error("[x] Error connecting to database:", error);
             return;
         }
         database = client.db(process.env.DB_NAME);
-        console.log("Connected to database");
+        console.log("[v] Connected to database");
         callback();
     });
 }
