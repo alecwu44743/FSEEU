@@ -2,6 +2,7 @@ const dotenv = require("dotenv");
 const express = require("express");
 const { connectDatabase, getDatabase } = require("./app/models");
 const userRoute = require("./app/routes/user.routes");
+const authRoute = require("./app/routes/auth.routes");
 const app =  express();
 
 dotenv.config();
@@ -16,6 +17,7 @@ connectDatabase(() => {
 
 app.use(express.json());
 app.use("/api/users", userRoute);
+app.use("/api/auth", authRoute);
 
 app.get('/', function (req, res) {
     res.send('Hello World')
