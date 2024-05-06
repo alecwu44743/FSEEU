@@ -6,9 +6,11 @@ const statusRoute = require("./app/routes/status.routes");
 const userRoute = require("./app/routes/user.routes");
 const authRoute = require("./app/routes/auth.routes");
 const app =  express();
+const cors= require("cors")
 
 dotenv.config();
 
+app.use(cors());
 app.use(express.json());
 app.use("", mainRoute);
 app.use("/status", statusRoute);

@@ -1,23 +1,23 @@
 <template>
   <h3>Todo App</h3>
-  <p>* {{text}}</p>
+  <b style="color: aquamarine;">* {{ text }}</b>
 </template>
 
 <script>
 import axios from 'axios'
 
-const API_URL = "http://localhost:5038/";
+const API_URL = "http://localhost:5038";
 
 export default {
   name: 'App',
   data(){
     return{
-      text: "",
+      text: '',
     }
   },
   methods: {
     async getData(){
-      axios.get(API_URL+ "/")
+      axios.get(API_URL+ "/helloworld")
       .then((response)=>{
         this.text= response.data;
       })
