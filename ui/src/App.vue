@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     async getData(){
-      axios.get(API_URL+ "/helloworld")
+      axios.get(API_URL+ "/")
       .then((response)=>{
         this.text= response.data;
       })
