@@ -30,3 +30,7 @@
 5. 如遇不當內容，可透過檢舉功能報告給管理員。
 
 我們希望透過逢甲遇到佛平台，讓逢甲大學的學生們能夠更輕鬆地分享課程經驗，增進互相之間的溝通與交流，同時保持平台的客觀、理性和互相尊重的氛圍。
+
+## Reference
+- [使用 Node.js + express + postgres 建立一個後端服務 REST API](https://calvinegs.github.io/posts/nodejs-restapi-postgres/)
+- [全端實作-MEVN](https://jacychu.medium.com/全端實作-mevn-1cfb97edae38)
