@@ -18,9 +18,9 @@ const databaseStatus = (req, res) => {
     });
 }
 
-const serverService = {
+const statusService = {
     serverStatus: serverStatus,
     databaseStatus: databaseStatus
 };
 
-module.exports = serverService;
+module.exports = statusService;

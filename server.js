@@ -1,7 +1,8 @@
 const dotenv = require("dotenv");
 const express = require("express");
 const { connectDatabase, getDatabase } = require("./app/models");
-const serverRoute = require("./app/routes/server.routes");
+const mainRoute = require("./app/routes/main.routes");
+const statusRoute = require("./app/routes/status.routes");
 const userRoute = require("./app/routes/user.routes");
 const authRoute = require("./app/routes/auth.routes");
 const app =  express();
@@ -9,7 +10,8 @@ const app =  express();
 dotenv.config();
 
 app.use(express.json());
-app.use("/status", serverRoute);
+app.use("", mainRoute);
+app.use("/status", statusRoute);
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 
@@ -41,10 +43,6 @@ function initial() {
     // });
     console.log("[v] Initial function is called");
 }
-
-app.get('/', function (req, res) {
-    res.send('Hello World，噗呲噗呲，咚噠噠噠')
-});
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
