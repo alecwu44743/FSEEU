@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const { connectDatabase, getDatabase } = require("../models");
 
 const home = (req, res) => {
@@ -36,10 +37,35 @@ const submit = (req, res) => {
     });
 }
 
+const post = (req, res) => {
+    console.log('[>] [services] Post :)');
+    
+    const database = getDatabase();
+    const post_collection = database.collection(process.env.DB_COLLECTION_POST);
+
+    const postID = req.params.param;
+
+    post_collection.findOne({ _id: new ObjectId(postID) }, (err, document) => {
+        if (err) {
+            console.error('[x] Error finding document:', err);
+            res.status(500).send({ message: 'Error finding document: ' + err });
+        } else {
+            if (document) {
+                console.log('[v] Document found:', document);
+                res.send(document);
+            } else {
+                console.log('[x] Document not found');
+                res.status(404).send({ message: 'Document not found' });
+            }
+        }
+    });
+}
+
 const mainService = {
     home: home,
     helloworld: helloworld,
-    submit: submit
+    submit: submit,
+    post: post
 };
 
 module.exports = mainService;

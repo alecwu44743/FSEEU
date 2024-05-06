@@ -12,4 +12,9 @@ router.post(
     mainService.submit
 );
 
+router.get(
+    "/post/:param",
+    mainService.post
+);
+
 module.exports = router;
