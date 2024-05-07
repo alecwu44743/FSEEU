@@ -48,12 +48,12 @@
     PASS_SEC=
     ```
 2. 安裝相依套件
-    - backend
+    - backend `FSEEU/`
         ```bash
         npm install
         npm start
         ```
-    - frontend
+    - frontend `FSEEU/views`
         ```bash
         npm install
         npm run serve
