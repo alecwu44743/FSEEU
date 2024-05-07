@@ -31,6 +31,35 @@
 
 我們希望透過逢甲遇到佛平台，讓逢甲大學的學生們能夠更輕鬆地分享課程經驗，增進互相之間的溝通與交流，同時保持平台的客觀、理性和互相尊重的氛圍。
 
+## 部署方式
+1. `.env` 檔案設定
+    ```
+    DB_HOST=
+    DB_USER=
+    DB_PASSWORD=
+    DB_NAME=
+    DB_COLLECTION_MAIN=
+    DB_COLLECTION_POST=
+    DB_COLLECTION_USERINFO=
+    DB_COLLECTION_USERTOKEN=
+    DB_COLLECTION_MODERATORTOKEN=
+
+    JWT_SEC=
+    PASS_SEC=
+    ```
+2. 安裝相依套件
+    - backend
+        ```bash
+        npm install
+        npm start
+        ```
+    - frontend
+        ```bash
+        npm install
+        npm run serve
+        ```
+3. 開啟瀏覽器，前往 `http://localhost:8080/` 即可使用。
+
 ## Reference
 - [使用 Node.js + express + postgres 建立一個後端服務 REST API](https://calvinegs.github.io/posts/nodejs-restapi-postgres/)
 - [全端實作-MEVN](https://jacychu.medium.com/全端實作-mevn-1cfb97edae38)
