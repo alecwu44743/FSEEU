@@ -1,6 +1,6 @@
 <template>
-    <div class= "signUp">
-        <form @submit.prevent="signUp">
+    <div class= "signIn">
+        <form @submit.prevent="signIn">
             <label>
                 帳號：<input type="text" name="username" v-model="username">
             </label>
@@ -17,7 +17,7 @@
 <script>
 import axios from 'axios'
 
-const API_URL = "http://localhost:8000";
+const API_URL = "http://localhost:8000/";
 
 export default {
     name: 'SignIn',

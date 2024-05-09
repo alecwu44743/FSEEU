@@ -16,15 +16,12 @@
             <button type="submit">Submit</button>
         </form>
     </div>
-    <p>{{ username }}</p>
-    <p>{{ password }}</p>
-    <p>{{ email }}</p>
 </template>
 
 <script>
 import axios from 'axios'
 
-const API_URL = "http://localhost:8000";
+const API_URL = "http://localhost:8000/";
 
 export default {
     name: 'SignUp',
