@@ -8,9 +8,13 @@ const authRoute = require("./app/routes/auth.routes");
 const app =  express();
 const cors= require("cors")
 
+var corsOptions = {
+    origin: "*"
+};
+
 dotenv.config();
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use("", mainRoute);
 app.use("/status", statusRoute);
