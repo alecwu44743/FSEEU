@@ -11,6 +11,15 @@ const helloworld = (req, res) => {
     res.send('Hello World，噗呲噗呲，咚噠噠噠');
 }
 
+const feeds = (req, res) => {
+    console.log("[>] [service] postall !!!");
+    const database = getDatabase();
+
+    database.collection(process.env.DB_COLLECTION_POST).find({}).toArray((err, document) => {
+        res.send(document);
+    })
+}
+
 const submit = (req, res) => {
     console.log('[>] [services] Submit :)');
     
@@ -64,6 +73,7 @@ const post = (req, res) => {
 const mainService = {
     home: home,
     helloworld: helloworld,
+    feeds: feeds,
     submit: submit,
     post: post
 };
