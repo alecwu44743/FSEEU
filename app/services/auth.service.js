@@ -73,7 +73,7 @@ const signin = (req, res) => {
 
                     _userrole = user.roles;
 
-                    if("user" == _userrole) {
+                    if("user" == _userrole || "moderator" == _userrole) {
                         usertoken_collection.insertOne({
                             username: user.username,
                             token: accessToken,
