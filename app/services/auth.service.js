@@ -14,20 +14,15 @@ const signup = (req, res) => {
         email: req.body.email,
         password: CryptoJS.AES.encrypt(req.body.password, process.env.JWT_SEC).toString()
     };
-
-    if (!req.body.roles) {
-        newUser.roles = "user";
-    }
-    else {
-        newUser.roles = req.body.roles;
-    }
+    
+    newUser.roles = req.body.roles;
 
     // If roles are specified, assign them to the user
     console.log(`[+] username: ${newUser.username}\n` +
     `    email: ${newUser.email}\n` +
     `    password: ${newUser.password}\n` +
     `    roles: ${newUser.roles}`);
-
+    
     userinfo_collection.insertOne(newUser, (err, user) => {
         if (err) {
             console.error("[x] Error inserting documents: ", err);
