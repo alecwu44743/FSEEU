@@ -37,8 +37,30 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
     });
 }
 
+const checkRolesExisted = (req, res, next) => {
+    console.log("[>] [services] Check roles existed");
+
+    if(req.body.roles) {
+        if(req.body.roles == "user" || req.body.roles == "moderator" || req.body.roles == "admin") {
+            console.log("[v] Role found:", req.body.roles);
+            next();
+        }
+        else {
+            console.log("[x] Role not found:", req.body.roles);
+            res.status(400).send({ message: "Failed! Role does not exist = " + req.body.roles });
+            return;
+        }
+    }
+    else{
+        console.log("[v] Role not specified, default to user");
+        req.body.roles = "user";
+        next();
+    }
+}
+
 const verifySignUp = {
-    checkDuplicateUsernameOrEmail: checkDuplicateUsernameOrEmail
+    checkDuplicateUsernameOrEmail: checkDuplicateUsernameOrEmail,
+    checkRolesExisted: checkRolesExisted
 };
 
 module.exports = verifySignUp;
