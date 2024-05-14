@@ -35,7 +35,8 @@ const signup = (req, res) => {
         }
         else{
             console.log(`[v] ${req.body.username}'s documents added successfully`);
-            res.send({ message: `${req.body.username}'s documents added successfully` });
+            // res.send({ message: `${req.body.username}'s documents added successfully` });
+            res.send("註冊成功");
         }
     });
 };
@@ -83,13 +84,14 @@ const signin = (req, res) => {
                         else{
                             console.log(`[v] ${user.username}'s documents added successfully`);
                             console.log(`[v] ${user.username}'s token added successfully`);
-                            res.status(200).send({
-                                id: user._id,
-                                username: user.username,
-                                email: user.email,
-                                roles: user.roles,
-                                accessToken: accessToken
-                            });
+                            // res.status(200).send({
+                            //     id: user._id,
+                            //     username: user.username,
+                            //     email: user.email,
+                            //     roles: user.roles,
+                            //     accessToken: accessToken
+                            // });
+                            res.send("登入成功！")
                         }
                     });
                 }
@@ -105,13 +107,14 @@ const signin = (req, res) => {
                         else{
                             console.log(`[v] ${user.username}'s documents added successfully`);
                             console.log(`[v] ${user.username}'s token added successfully`);
-                            res.status(200).send({
-                                id: user._id,
-                                username: user.username,
-                                email: user.email,
-                                roles: user.roles,
-                                accessToken: accessToken
-                            });
+                            // res.status(200).send({
+                            //     id: user._id,
+                            //     username: user.username,
+                            //     email: user.email,
+                            //     roles: user.roles,
+                            //     accessToken: accessToken
+                            // });
+                            res.send("登入成功！")
                         }
                     });
                 }
@@ -131,7 +134,8 @@ const signin = (req, res) => {
                 }
             } else {
                 console.log("[x] Error: User not found");
-                res.status(404).send({ message: `Error: User:${_username} not found` });
+                // res.status(404).send({ message: `Error: User:${_username} not found` });
+                res.send("帳號輸入錯誤！");
             }
         }
     });
