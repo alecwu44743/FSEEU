@@ -55,69 +55,10 @@ const signin = (req, res) => {
                 console.log("[v] User found:", user);
                 const hashedPassword = CryptoJS.AES.decrypt(user.password, process.env.JWT_SEC);
                 const orginalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
-<<<<<<< HEAD
-                
-                orginalPassword !== _password && res.status(401).json("Wrong Credentials");
-                
-                const accessToken = jwt.sign(
-                    {id: user._id}, 
-                    process.env.JWT_SEC,
-                    { expiresIn: "3d" }
-                )
-                
-                _userrole = user.roles;
-                
-                if(_userrole == "user"){
-                    usertoken_collection.insertOne({
-                        username: user.username,
-                        token: accessToken
-                    }, (err, token) => {
-                        if (err) {
-                            console.error("[x] Error inserting documents: ", err);
-                            res.status(500).send({ message: "Error inserting documents: " + err });
-                        }
-                        else{
-                            console.log(`[v] ${user.username}'s documents added successfully`);
-                            console.log(`[v] ${user.username}'s token added successfully`);
-                            // res.status(200).send({
-                            //     id: user._id,
-                            //     username: user.username,
-                            //     email: user.email,
-                            //     roles: user.roles,
-                            //     accessToken: accessToken
-                            // });
-                            res.send("登入成功！")
-                        }
-                    });
-                }
-                else if(_userrole == "moderator"){
-                    moderatortoken_collection.insertOne({
-                        username: user.username,
-                        token: accessToken
-                    }, (err, token) => {
-                        if (err) {
-                            console.error("[x] Error inserting documents: ", err);
-                            res.status(500).send({ message: "Error inserting documents: " + err });
-                        }
-                        else{
-                            console.log(`[v] ${user.username}'s documents added successfully`);
-                            console.log(`[v] ${user.username}'s token added successfully`);
-                            // res.status(200).send({
-                            //     id: user._id,
-                            //     username: user.username,
-                            //     email: user.email,
-                            //     roles: user.roles,
-                            //     accessToken: accessToken
-                            // });
-                            res.send("登入成功！")
-                        }
-                    });
-=======
 
                 if(orginalPassword !== _password){
                     console.log("[x] Wrong Credentials");
                     res.status(401).json("Wrong Credentials");
->>>>>>> main
                 }
                 else{
                     const accessToken = jwt.sign(
