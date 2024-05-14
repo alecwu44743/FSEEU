@@ -57,7 +57,8 @@ const signin = (req, res) => {
 
                 if(orginalPassword !== _password){
                     console.log("[x] Wrong Credentials");
-                    res.status(401).json("Wrong Credentials");
+                    // res.status(401).json("Wrong Credentials");
+                    res.send("密碼錯誤！");
                 }
                 else{
                     const accessToken = jwt.sign(
@@ -108,7 +109,8 @@ const signin = (req, res) => {
                 }
             } else {
                 console.log("[x] Error: User not found");
-                res.status(404).send({ message: `Error: User:${_username} not found` });
+                // res.status(404).send({ message: `Error: User:${_username} not found` });
+                res.send("帳號錯誤！");
             }
         }
     });
