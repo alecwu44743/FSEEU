@@ -5,9 +5,11 @@ const { verifySignUp } = require("../middleware");
 // sign up
 router.post("/signup",
 [
-    verifySignUp.checkDuplicateUsernameOrEmail
+    verifySignUp.checkDuplicateUsernameOrEmail,
+    verifySignUp.checkRolesExisted
 ],
 authService.signup);
+
 // sign in
 router.post("/signin", authService.signin);
 

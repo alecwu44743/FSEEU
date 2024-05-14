@@ -6,6 +6,8 @@ router.get("/", mainService.home);
 
 router.get("/helloworld", mainService.helloworld);
 
+router.get("/feeds", mainService.feeds);
+
 router.post(
     "/submit", 
     [authJwt.verifyToken],
