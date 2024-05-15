@@ -11,18 +11,18 @@
                         <div class="card-body">
                             <form @submit.prevent="signUp" @input="check">
                                 <div class= "mb-3">
-                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="學號" name="username" v-model="username">
+                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="學號" name="username" v-model="username" required="required">
                                     <p v-if="usernameError" style="color: red;margin-top: 10px;">不符合學號格式！</p>
                                 </div>
                                 <div class= "mb-3">
-                                    <input type="password" class="form-control" id="formGroupExampleInput" placeholder="密碼"name="password" v-model="password">
+                                    <input type="password" class="form-control" id="formGroupExampleInput" placeholder="密碼"name="password" v-model="password" required="required">
                                 </div>
                                 <div class= "mb-3">
-                                    <input type="password" class="form-control" id="formGroupExampleInput" placeholder="密碼確認"name="password2" v-model="password2">
+                                    <input type="password" class="form-control" id="formGroupExampleInput" placeholder="密碼確認"name="password2" v-model="password2" required="required">
                                     <p v-if="passwordError" style="color: red;margin-top: 10px;">密碼不相符！</p>
                                 </div>
                                 <div class= "mb-3">
-                                    <input type="email" class="form-control" id="formGroupExampleInput" placeholder="email" name="email" v-model="email">
+                                    <input type="email" class="form-control" id="formGroupExampleInput" placeholder="email" name="email" v-model="email" required="required">
                                 </div>
                                 <div class="separator"></div>
                                 <a href="/signin" style="text-decoration: none;color: black;margin-right: 280px;">返回登入</a>
