@@ -11,10 +11,10 @@
                         <div class="card-body">
                             <form @submit.prevent="signIn">
                                 <div class= "mb-3">
-                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="學號" name="username" v-model="username">
+                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="學號" name="username" v-model="username" required="required">
                                 </div>
                                 <div class= "mb-3">
-                                    <input type="password" class="form-control" id="formGroupExampleInput" placeholder="密碼"name="password" v-model="password">
+                                    <input type="password" class="form-control" id="formGroupExampleInput" placeholder="密碼"name="password" v-model="password" required="required">
                                 </div>
                                 <div class="separator"></div>
                                 <a href="/signup" style="text-decoration: none;color: black;">註冊</a>
@@ -45,6 +45,13 @@ export default {
             username: "",
             password: "",
             msg: "",
+            userInfo: {
+                id: "",
+                username: "",
+                email: "",
+                roles: "",
+                accessToken: "",
+            }
         }
     },
     methods: {
@@ -62,7 +69,18 @@ export default {
                 data: userData,
             })
             .then(res=> {
-                this.msg= res.data;
+                if(res.data== "帳號錯誤！"|| res.data== "密碼錯誤！"){
+                    this.msg= res.data;
+                }
+                else{
+                    this.userInfo= {
+                        id: res.data.id,
+                        username: res.data.username,
+                        email: res.data.email,
+                        roles: res.data.roles,
+                        accessToken: res.data.accessToken
+                    }
+                }
 
                 if(this.msg!= "帳號錯誤！"&& this.msg!= "密碼錯誤！"){
                     window.location.href= "/";
