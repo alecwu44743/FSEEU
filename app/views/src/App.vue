@@ -18,7 +18,8 @@
 
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="/signin">登入</a>
+              <a v-if="!isLoggedIn" class="nav-link" href="/signin">登入</a>
+              <a v-else>{{ username }}</a>
             </li>
           </ul>
         </div>
@@ -28,6 +29,35 @@
 
   <router-view/>
 </template>
+
+<script>
+
+export default{
+  name: 'App',
+  data() {
+    return {
+      isLoggedIn: false,
+      username: null,
+    }
+  },
+  methods: {
+    getUser(){
+      this.username= localStorage.getItem("authTokenUsername");
+
+      if(this.username){
+        this.isLoggedIn= true;
+      }
+      else{
+        this.isLoggedIn= false;
+      }
+    }
+  },
+  mounted: function() {
+    this.getUser();
+  }
+  
+}
+</script>
 
 <style>
 #app {
