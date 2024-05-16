@@ -9,7 +9,7 @@ import axios from 'axios'
 const API_URL = "http://localhost:5038";
 
 export default {
-  name: 'App',
+  name: 'Home',
   data() {
     return {
       text: "",
@@ -17,7 +17,11 @@ export default {
   },
   methods: {
     async refreshData() {
-      axios.get(API_URL+"/")
+      axios.get(API_URL+"/", {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("authTokenAccessToken")}`
+        }
+      })
       .then((response)=>{
         this.text=response.data;
       })
