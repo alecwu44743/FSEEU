@@ -45,13 +45,6 @@ export default {
             username: "",
             password: "",
             msg: "",
-            userInfo: {
-                id: "",
-                username: "",
-                email: "",
-                roles: "",
-                accessToken: "",
-            }
         }
     },
     methods: {
@@ -73,16 +66,7 @@ export default {
                     this.msg= res.data;
                 }
                 else{
-                    this.userInfo= {
-                        id: res.data.id,
-                        username: res.data.username,
-                        email: res.data.email,
-                        roles: res.data.roles,
-                        accessToken: res.data.accessToken
-                    }
-                }
-
-                if(this.msg!= "帳號錯誤！"&& this.msg!= "密碼錯誤！"){
+                    this.$store.commit('setToken',res.data);
                     window.location.href= "/";
                 }
             })
