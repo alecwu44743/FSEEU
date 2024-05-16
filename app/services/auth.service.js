@@ -82,12 +82,19 @@ const signin = (req, res) => {
                             else{
                                 console.log(`[v] ${user.username}'s documents added successfully`);
                                 console.log(`[v] ${user.username}'s token added successfully`);
-                                res.status(200).send({
-                                    id: user._id,
+
+                                // res.status(200).send({
+                                //     id: user._id,
+                                //     username: user.username,
+                                //     email: user.email,
+                                //     roles: user.roles,
+                                //     accessToken: accessToken
+                                // });
+
+                                res.send({
                                     username: user.username,
-                                    email: user.email,
-                                    roles: user.roles,
-                                    accessToken: accessToken
+                                    accessToken: accessToken,
+                                    roles: user.roles
                                 });
                             }
                         });
