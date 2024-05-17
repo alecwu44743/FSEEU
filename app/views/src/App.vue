@@ -1,31 +1,35 @@
 <template>
-  <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-  </head>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">FSEEU</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">動態</a>
+          </li>
+        </ul>
 
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">FSEEU</a>
-        
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">動態</a>
-            </li>
-            
-          </ul>
-
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a v-if="!isLoggedIn" class="nav-link" href="/signin">登入</a>
-              <a v-else>{{ username }}</a>
-            </li>
-          </ul>
-        </div>
+        <ul class="navbar-nav">
+          <li v-if="!isLoggedIn" class="nav-item">
+            <a class="nav-link" href="/signin">登入</a>
+          </li>
+          <li v-else class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="#">關於我們</a></li>
+              <li><a class="dropdown-item" href="/signin" @click="signOut">登出</a></li>
+            </ul>
+          </li>
+        </ul>
       </div>
-    </nav>
-  </body>
+    </div>
+  </nav>
 
   <router-view/>
 </template>
@@ -42,14 +46,15 @@ export default{
   },
   methods: {
     getUser(){
-      this.username= localStorage.getItem("authTokenUsername");
-
-      if(this.username){
+      if(localStorage.getItem("authTokenUsername")){
+        this.username= localStorage.getItem("authTokenUsername");
         this.isLoggedIn= true;
       }
-      else{
-        this.isLoggedIn= false;
-      }
+    },
+    signOut(){
+      this.$store.commit('delToken');
+      this.username= null;
+      this.isLoggedIn= false;
     }
   },
   mounted: function() {
