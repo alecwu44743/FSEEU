@@ -1,36 +1,30 @@
 <template>
-    <head>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    </head>
-
-    <body>
-        <div class="container d-flex justify-content-center align-items-center" style="height: 80vh;">
-            <div class="row">
-                <div class="col-6">
-                    <div class="card" style="width: 25rem;">
-                        <div class="card-body">
-                            <form @submit.prevent="signIn">
-                                <div class= "mb-3">
-                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="學號" name="username" v-model="username" required="required">
-                                </div>
-                                <div class= "mb-3">
-                                    <input type="password" class="form-control" id="formGroupExampleInput" placeholder="密碼"name="password" v-model="password" required="required">
-                                </div>
-                                <div class="separator"></div>
-                                <a href="/signup" style="text-decoration: none;color: black;">註冊</a>
-                                <a href="/signin" style="text-decoration: none;margin-left: 250px;color: black;">忘記密碼</a>
-                                <br>
-                                <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-light" style="margin-top: 20px;">登入</button>
-                                </div>
-                            </form>
-                            <p style="margin-top: 20px;">{{ msg }}</p>
-                        </div>
+    <div class="container d-flex justify-content-center align-items-center" style="height: 80vh;">
+        <div class="row">
+            <div class="col-6">
+                <div class="card" style="width: 25rem;">
+                    <div class="card-body">
+                        <form @submit.prevent="signIn">
+                            <div class= "mb-3">
+                                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="學號" name="username" v-model="username" required="required">
+                            </div>
+                            <div class= "mb-3">
+                                <input type="password" class="form-control" id="formGroupExampleInput" placeholder="密碼"name="password" v-model="password" required="required">
+                            </div>
+                            <div class="separator"></div>
+                            <a href="/signup" style="text-decoration: none;color: black;">註冊</a>
+                            <a href="/signin" style="text-decoration: none;margin-left: 250px;color: black;">忘記密碼</a>
+                            <br>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-light" style="margin-top: 20px;">登入</button>
+                            </div>
+                        </form>
+                        <p style="margin-top: 20px;">{{ msg }}</p>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
 </template>
 
 <script>
