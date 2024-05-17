@@ -62,18 +62,20 @@ export default {
             };
 
             // 使用 Axios 發送 POST 請求到後端的 API 端點
-            axios({
+            if(!this.usernameError&& !this.passwordError){
+                axios({
                 method: 'post',
                 url: API_URL+ 'api/auth/signup',
                 data: userData,
-            })
-            .then(res=> {
-                this.msg= res.data;
+                })
+                .then(res=> {
+                    this.msg= res.data;
 
-                if(this.msg!= "帳號重複註冊！"&& this.msg!= "email重複註冊！"){
-                    window.location.href= "/signin";
-                }
-            })
+                    if(this.msg!= "帳號重複註冊！"&& this.msg!= "email重複註冊！"){
+                        window.location.href= "/signin";
+                    }
+                })
+            }
         },
         check(){
             if (this.username.length !== 8 || this.username[0] !== 'D') {
