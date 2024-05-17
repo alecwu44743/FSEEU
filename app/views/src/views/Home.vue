@@ -17,11 +17,7 @@ export default {
   },
   methods: {
     async refreshData() {
-      axios.get(API_URL+"/", {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem("authTokenAccessToken")}`
-        }
-      })
+      axios.get(API_URL+"/")
       .then((response)=>{
         this.text=response.data;
       })
