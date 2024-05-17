@@ -9,7 +9,7 @@ import axios from 'axios'
 const API_URL = "http://localhost:5038";
 
 export default {
-  name: 'App',
+  name: 'Home',
   data() {
     return {
       text: "",
