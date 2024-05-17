@@ -7,11 +7,17 @@ export default createStore({
   getters: {
   },
   mutations: {
-    setToken (state, newAuthTokens) {
+    setToken(state, newAuthTokens){
       state.authTokens= newAuthTokens
       localStorage.setItem("authTokenUsername", newAuthTokens['username']);
       localStorage.setItem("authTokenAccessToken", newAuthTokens['accessToken']);
       localStorage.setItem("authTokenRoles", newAuthTokens['roles']);
+    },
+    delToken(state){
+      state.authTokens = {'username':null, 'accessToken':null, 'roles': null};
+      localStorage.removeItem("authTokenUsername")
+      localStorage.removeItem("authTokenAccessToken")
+      localStorage.removeItem("authTokenRoles")
     }
   },
   actions: {
