@@ -29,6 +29,7 @@ const submit = (req, res) => {
     const post = {
         course: req.body.course,
         college: req.body.college,
+        department: req.body.department,
         teacher: req.body.teacher,
         title: req.body.title,
         content: req.body.content,
