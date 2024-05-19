@@ -2,12 +2,15 @@
     <div class= "container justify-content-center align-items-center" style="">
         <form class="row g-3" @submit.prevent="post">
             <div class="col-md-6">
-                <input type="text" class="form-control" id="inputCollege" placeholder="科系" name= "college" v-model="college" required="required">
+                <input type="text" class="form-control" id="inputCollege" placeholder="學院" name= "college" v-model="college" required="required">
             </div>
             <div class="col-md-6">
                 <input type="text" class="form-control" id="inputTeacher" placeholder="教授" name= "teacher" v-model="teacher" required="required">
             </div>
-            <div class="col-12">
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="inputDepartment" placeholder="學系" name= "department" v-model="department" required="required">
+            </div>
+            <div class="col-md-6">
                 <input type="text" class="form-control" id="inputCourse" placeholder="課程名稱" name= "course" v-model="course" required="required">
             </div>
             <div class="col-12">
@@ -34,6 +37,7 @@ export default {
         return {
             course: "",
             college: "",
+            department: "",
             teacher: "",
             title: "",
             content: "",
@@ -44,6 +48,7 @@ export default {
             const postData= {
                 course: this.course,
                 college: this.college,
+                department: this.department,
                 teacher: this.teacher,
                 title: this.title,
                 content: this.content,
@@ -58,11 +63,12 @@ export default {
                 }
             });
 
-            this.course = "";
-            this.college = "";
-            this.teacher = "";
-            this.title = "";
-            this.content = "";
+            this.course= "";
+            this.college= "";
+            this.department= "";
+            this.teacher= "";
+            this.title= "";
+            this.content= "";
         }
     }
 }
