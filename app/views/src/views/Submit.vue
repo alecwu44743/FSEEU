@@ -56,7 +56,13 @@ export default {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('authTokenAccessToken')}`,
                 }
-            })
+            });
+
+            this.course = "";
+            this.college = "";
+            this.teacher = "";
+            this.title = "";
+            this.content = "";
         }
     }
 }
