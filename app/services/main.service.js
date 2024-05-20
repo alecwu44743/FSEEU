@@ -42,7 +42,6 @@ const submit = (req, res) => {
             res.status(500).send({ message: 'Error inserting documents: ' + err });
         }
         else {
-            const postId = result.insertedId;
             console.log(`[v] [${req.body.title}]'s documents added successfully`);
             res.send({ 
                 message: `[${req.body.title}]'s documents added successfully`,
