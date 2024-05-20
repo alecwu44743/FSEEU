@@ -41,6 +41,7 @@ export default {
             teacher: "",
             title: "",
             content: "",
+            postId: "",
         }
     },
     methods: {
@@ -61,7 +62,12 @@ export default {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('authTokenAccessToken')}`,
                 }
-            });
+            })
+            .then(res=> {
+                this.postId= res.data.post_id;
+                this.$router.push(`/post/${this.postId}`);
+                window.location.href= `/post/${this.postId}`;
+            })
 
             this.course= "";
             this.college= "";
