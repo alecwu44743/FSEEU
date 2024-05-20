@@ -29,19 +29,24 @@ const submit = (req, res) => {
     const post = {
         course: req.body.course,
         college: req.body.college,
+        department: req.body.department,
         teacher: req.body.teacher,
         title: req.body.title,
         content: req.body.content,
         date: new Date().toISOString()
     };
 
-    post_collection.insertOne(post, (err, user) => {
+    post_collection.insertOne(post, (err, result) => {
         if (err) {
             console.error('[x] Error inserting documents:', err);
             res.status(500).send({ message: 'Error inserting documents: ' + err });
-        } else {
+        }
+        else {
             console.log(`[v] [${req.body.title}]'s documents added successfully`);
-            res.send({ message: `[${req.body.title}]'s documents added successfully` });
+            res.send({ 
+                message: `[${req.body.title}]'s documents added successfully`,
+                post_id: result.insertedId
+            });
         }
     });
 }

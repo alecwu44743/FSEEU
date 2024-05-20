@@ -11,6 +11,9 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">動態</a>
           </li>
+          <li class="nav-item">
+              <a v-if="isLoggedIn" class="nav-link active" href="/submit">發文</a>
+          </li>
         </ul>
 
         <ul class="navbar-nav">
