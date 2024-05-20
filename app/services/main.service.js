@@ -48,7 +48,6 @@ const submit = (req, res) => {
                 message: `[${req.body.title}]'s documents added successfully`,
                 post_id: result.insertedId
             });
-            
         }
     });
 }
