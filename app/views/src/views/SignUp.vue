@@ -99,6 +99,10 @@ export default {
 </script>
 
 <style>
+.container {
+    margin-top: 50px;
+}
+
 .separator {
     border-top: 1px solid #000; /* 分隔線的樣式 */
     margin: 20px 0; /* 分隔線上下的間距 */

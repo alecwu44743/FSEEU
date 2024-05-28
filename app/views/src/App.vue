@@ -76,6 +76,13 @@ export default{
   color: #2c3e50;
 }
 
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* 保證在其他內容之上 */
+}
+
 nav {
   padding: 30px;
 }
