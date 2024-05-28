@@ -81,7 +81,6 @@ const submitComment = (req, res) => {
     const database = getDatabase();
     const comment_collection = database.collection(process.env.DB_COLLECTION_COMMENT);
 
-    const postID = req.params.param;
     const post_comment = {
         post_id: req.params.param,
         author: req.body.author,
