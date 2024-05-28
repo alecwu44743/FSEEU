@@ -1,6 +1,22 @@
 <template>
-    <div v-for="(value, key) in postInfo" :key="key">
-      <p v-if="value">{{ key }}: {{ value }}</p>
+    <div class="overlay-backdrop">
+        <div class="post-info">
+            <div class="post-item">
+                <div class= "cd">
+                    <span class= "college">{{ postInfo.college }} | </span>
+                    <span class= "department">{{ postInfo.department }}</span>
+                </div>
+                <div class= "tctd">
+                    <div class= "ttitle">{{ postInfo.title }}</div>
+                    <span class= "course">{{ postInfo.course }} | </span>
+                    <span class= "teacher">{{ postInfo.teacher }}</span>
+                    <span class= "ddate">{{ postInfo.date }}</span>
+                </div>
+                <div class= "contentArea">
+                    <p class= "content">{{ postInfo.content }}</p>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -20,6 +36,7 @@ export default{
                 teacher: "",
                 title: "",
                 content: "",
+                date: ""
             }
         }
     },
@@ -34,6 +51,7 @@ export default{
                     teacher: response.data.teacher,
                     title: response.data.title,
                     content: response.data.content,
+                    date: response.data.date.substring(0, 10)
                 }
             })
         }
@@ -45,5 +63,59 @@ export default{
 </script>
 
 <style>
+.overlay-backdrop {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3); /* 可選的背景色，增加對比 */
+  margin-top: 50px;
+}
 
+.post-info {
+  background-color: white;
+  /* border-radius: 8px; */
+  text-align: left;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%; /* 調整寬度 */
+  max-width: 750px; /* 設置最大寬度，根據需要調整 */
+  padding: 50px;
+}
+
+.post-item {
+  margin-bottom: 10px;
+}
+
+.ttitle {
+    font-size: 30px;
+    margin-top: 10px;
+}
+
+.cd {
+    border-bottom: 1px solid #ddd; /* 添加分割線 */
+    padding-bottom: 10px; /* 分割線上方的間距 */
+}
+
+.course{
+    font-size: 13px;
+    margin-left: 2px;
+}
+
+.teacher {
+    font-size: 13px;
+}
+
+.ddate {
+    font-size: 13px;
+    margin-left: 20px;
+    color: gray;
+}
+
+.contentArea {
+    margin-top: 20px;
+}
+
+.content {
+    line-height: 2; /* 調整此值來增加行距 */
+}
 </style>
