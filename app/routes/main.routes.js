@@ -25,4 +25,9 @@ router.post(
     mainService.submitComment
 )
 
+router.get(
+    "/comments/:param",
+    mainService.getComment
+)
+
 module.exports = router;
