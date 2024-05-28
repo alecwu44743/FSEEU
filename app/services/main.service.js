@@ -75,12 +75,64 @@ const post = (req, res) => {
     });
 }
 
+const submitComment = (req, res) => {
+    console.log('[>] [services] Submit Comment :)');
+    
+    const database = getDatabase();
+    const comment_collection = database.collection(process.env.DB_COLLECTION_COMMENT);
+
+    const post_comment = {
+        post_id: req.params.param,
+        author: req.body.author,
+        content: req.body.comment,
+        date: new Date().toISOString()
+    };
+
+    comment_collection.insertOne(post_comment, (err, result) => {
+        if (err) {
+            console.error('[x] Error inserting comment:', err);
+            res.status(500).send({ message: 'Error inserting comment: ' + err });
+        } else {
+            console.log(`[v] [${req.body.author}]'s comment added successfully`);
+            res.send({ 
+                message: `[${req.body.author}]'s comment added successfully`,
+                comment_id: result.insertedId
+            });
+        }
+    });
+}
+
+const getComment = (req, res) => {
+    const postID = req.params.param;
+    console.log("[>] [services] Get Comment :)");
+
+    const database = getDatabase();
+    const comment_collection = database.collection(process.env.DB_COLLECTION_COMMENT);
+
+    comment_collection.find({ post_id: postID }).toArray((err, document) => {
+        if (err) {
+            console.error('[x] Error finding comment:', err);
+            res.status(500).send({ message: 'Error finding comment: ' + err });
+        } else {
+            if (document) {
+                console.log('[v] Comment found:', document);
+                res.send(document);
+            } else {
+                console.log('[x] Comment not found');
+                res.status(404).send({ message: 'Comment not found' });
+            }
+        }
+    });
+}
+
 const mainService = {
     home: home,
     helloworld: helloworld,
     feeds: feeds,
     submit: submit,
-    post: post
+    post: post,
+    submitComment: submitComment,
+    getComment: getComment
 };
 
 module.exports = mainService;
