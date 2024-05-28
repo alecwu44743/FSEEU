@@ -75,12 +75,41 @@ const post = (req, res) => {
     });
 }
 
+const submitComment = (req, res) => {
+    console.log('[>] [services] Submit Comment :)');
+    
+    const database = getDatabase();
+    const comment_collection = database.collection(process.env.DB_COLLECTION_COMMENT);
+
+    const postID = req.params.param;
+    const post_comment = {
+        post_id: req.params.param,
+        author: req.body.author,
+        content: req.body.comment,
+        date: new Date().toISOString()
+    };
+
+    comment_collection.insertOne(post_comment, (err, result) => {
+        if (err) {
+            console.error('[x] Error inserting comment:', err);
+            res.status(500).send({ message: 'Error inserting comment: ' + err });
+        } else {
+            console.log(`[v] [${req.body.author}]'s comment added successfully`);
+            res.send({ 
+                message: `[${req.body.author}]'s comment added successfully`,
+                comment_id: result.insertedId
+            });
+        }
+    });
+}
+
 const mainService = {
     home: home,
     helloworld: helloworld,
     feeds: feeds,
     submit: submit,
-    post: post
+    post: post,
+    submitComment: submitComment
 };
 
 module.exports = mainService;
