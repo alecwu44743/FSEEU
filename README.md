@@ -42,6 +42,7 @@
     DB_COLLECTION_POST=
     DB_COLLECTION_USERINFO=
     DB_COLLECTION_USERTOKEN=
+    DB_COLLECTION_COMMENT=
 
     JWT_SEC=
     PASS_SEC=
@@ -52,7 +53,7 @@
         npm install
         npm start
         ```
-    - frontend `FSEEU/views`
+    - frontend `FSEEU/app/views`
         ```bash
         npm install
         npm run serve
