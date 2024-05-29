@@ -17,16 +17,15 @@
                 </div>
                 <div class="commentArea">
                     <h3>留言區</h3>
-                    <!-- <div v-for="comment in comments" :key="comment.id" class="comment">
-                        <p><strong>{{ comment.author }}</strong> {{ comment.date }}</p>
-                        <p>{{ comment.text }}</p>
-                    </div> -->
-                    <form @submit.prevent="submitComment" class="comment-form">
+                    <form v-if= "isLoggedIn" @submit.prevent="submitComment" class="comment-form">
                         <input type="text" class="form-control" id="formGroupExampleInput" placeholder="你想說......" name="comment" v-model="comment" required="required">
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-light" style="margin-top: 20px;">送出</button>
                         </div>
                     </form>
+                    <div v-else style= "margin-top: 20px; margin-bottom: 20px;">
+                        <a href= "/signin" style="text-decoration: none; color: black;">留言請先登入</a>
+                    </div>
                     <div>
                         <div class= "commentsArea" v-for= "item in comments">
                             <span class= "commentsAuthor">
@@ -64,6 +63,7 @@ export default{
                 content: "",
                 date: ""
             },
+            isLoggedIn: false,
             author: localStorage.getItem("authTokenUsername"),
             comment: "",
             comments: []
@@ -109,10 +109,17 @@ export default{
             .then(res=> {
                 location.reload();
             })
-        }
+        },
+        getUser(){
+            if(localStorage.getItem("authTokenUsername")){
+                this.username= localStorage.getItem("authTokenUsername");
+                this.isLoggedIn= true;
+            }
+        },
     },
     mounted: function() {
         this.refreshData();
+        this.getUser();
     }
 }
 </script>
