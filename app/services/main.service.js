@@ -33,6 +33,7 @@ const submit = (req, res) => {
         teacher: req.body.teacher,
         title: req.body.title,
         content: req.body.content,
+        author: req.body.author,
         date: new Date().toISOString()
     };
 
@@ -67,6 +68,43 @@ const post = (req, res) => {
             if (document) {
                 console.log('[v] Document found:', document);
                 res.send(document);
+            } else {
+                console.log('[x] Document not found');
+                res.status(404).send({ message: 'Document not found' });
+            }
+        }
+    });
+}
+
+const deletePost = (req, res) => {
+    const postID = req.params.param;
+    console.log('[>] [services] Delete Post :)');
+    
+    const database = getDatabase();
+    const post_collection = database.collection(process.env.DB_COLLECTION_POST);
+
+    // if post's author is the same as the token's username or the token's role is moderator
+    // then delete the post
+    post_collection.findOne({ _id: new ObjectId(postID) }, (err, document) => {
+        if (err) {
+            console.error('[x] Error finding document:', err);
+            res.status(500).send({ message: 'Error finding document: ' + err });
+        } else {
+            if (document) {
+                console.log('[v] Document found:', document);
+                if (document.author == req.body.author || req.body.isModerator) {
+                    post_collection.deleteOne({ _id: new ObjectId(postID) }, (err, result) => {
+                        if (err) {
+                            console.error('[x] Error deleting document:', err);
+                            res.status(500).send({ message: 'Error deleting document: ' + err });
+                        } else {
+                            console.log('[v] Document deleted successfully');
+                            res.send({ message: 'Document deleted successfully' });
+                        }
+                    });
+                } else {
+                    res.status(401).send({ message: 'Unauthorized!' });
+                }
             } else {
                 console.log('[x] Document not found');
                 res.status(404).send({ message: 'Document not found' });
@@ -236,6 +274,7 @@ const mainService = {
     feeds: feeds,
     submit: submit,
     post: post,
+    deletePost: deletePost,
     submitComment: submitComment,
     getComment: getComment,
     deleteComment: deleteComment,

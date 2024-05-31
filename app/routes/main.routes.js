@@ -10,7 +10,7 @@ router.get("/feeds", mainService.feeds);
 
 router.post(
     "/submit", 
-    [authJwt.verifyToken],
+    [authJwt.verifyToken, verifyPost.checkAuthor],
     mainService.submit
 );
 
@@ -45,6 +45,12 @@ router.post(
     "/d/comment/:param",
     [authJwt.verifyToken, verifyPost.checkAuthor],
     mainService.deleteComment
+)
+
+router.post(
+    "/d/post/:param",
+    [authJwt.verifyToken, verifyPost.checkAuthor, verifyPost.checkModerator],
+    mainService.deletePost
 )
 
 module.exports = router;
