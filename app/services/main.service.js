@@ -33,6 +33,7 @@ const submit = (req, res) => {
         teacher: req.body.teacher,
         title: req.body.title,
         content: req.body.content,
+        author: req.body.author,
         date: new Date().toISOString()
     };
 
@@ -67,6 +68,43 @@ const post = (req, res) => {
             if (document) {
                 console.log('[v] Document found:', document);
                 res.send(document);
+            } else {
+                console.log('[x] Document not found');
+                res.status(404).send({ message: 'Document not found' });
+            }
+        }
+    });
+}
+
+const deletePost = (req, res) => {
+    const postID = req.params.param;
+    console.log('[>] [services] Delete Post :)');
+    
+    const database = getDatabase();
+    const post_collection = database.collection(process.env.DB_COLLECTION_POST);
+
+    // if post's author is the same as the token's username or the token's role is moderator
+    // then delete the post
+    post_collection.findOne({ _id: new ObjectId(postID) }, (err, document) => {
+        if (err) {
+            console.error('[x] Error finding document:', err);
+            res.status(500).send({ message: 'Error finding document: ' + err });
+        } else {
+            if (document) {
+                console.log('[v] Document found:', document);
+                if (document.author == req.body.author || req.body.isModerator) {
+                    post_collection.deleteOne({ _id: new ObjectId(postID) }, (err, result) => {
+                        if (err) {
+                            console.error('[x] Error deleting document:', err);
+                            res.status(500).send({ message: 'Error deleting document: ' + err });
+                        } else {
+                            console.log('[v] Document deleted successfully');
+                            res.send({ message: 'Document deleted successfully' });
+                        }
+                    });
+                } else {
+                    res.status(401).send({ message: 'Unauthorized!' });
+                }
             } else {
                 console.log('[x] Document not found');
                 res.status(404).send({ message: 'Document not found' });
@@ -125,14 +163,123 @@ const getComment = (req, res) => {
     });
 }
 
+const deleteComment = (req, res) => {
+    const commentID = req.params.param;
+    const author = req.body.author;
+    console.log("[>] [services] Delete Comment :)");
+
+    const database = getDatabase();
+    const comment_collection = database.collection(process.env.DB_COLLECTION_COMMENT);
+
+    comment_collection.findOne({ _id: new ObjectId(commentID) }, (err, document) => {
+        if (err) {
+            console.error('[x] Error finding document:', err);
+            res.status(500).send({ message: 'Error finding document: ' + err });
+        } else {
+            if (document) {
+                console.log('[v] Comment found:', document);
+                if (document.author == author) {
+                    comment_collection.deleteOne({ _id: new ObjectId(commentID) }, (err, result) => {
+                        if (err) {
+                            console.error('[x] Error deleting comment:', err);
+                            res.status(500).send({ message: 'Error deleting comment: ' + err });
+                        } else {
+                            console.log('[v] Comment deleted successfully');
+                            res.send({ message: 'Comment deleted successfully' });
+                        }
+                    });
+                } else {
+                    res.status(401).send({ message: 'Unauthorized!' });
+                }
+            } else {
+                console.log('[x] Comment not found');
+                res.status(404).send({ message: 'Comment not found' });
+            }
+        }
+    });
+}
+
+const like = (req, res) => {
+    const postID = req.params.param;
+    console.log("[>] [services] Like :)");
+
+    const database = getDatabase();
+    const like_likecollection = database.collection(process.env.DB_COLLECTION_LIKE);
+
+    const author = req.body.author;
+
+    like_likecollection.findOne({ post_id: postID, author: author }, (err, document) => {
+        if (err) {
+            console.error('[x] Error finding document:', err);
+            res.status(500).send({ message: 'Error finding document: ' + err });
+        } else {
+            if (document) {
+                console.log('[v] Document found:', document);
+                like_likecollection.deleteOne({ post_id: postID, author: author }, (err, result) => {
+                    if (err) {
+                        console.error('[x] Error deleting document:', err);
+                        res.status(500).send({ message: 'Error deleting document: ' + err });
+                    } else {
+                        console.log('[v] Document deleted successfully');
+                        res.send({ message: 'Document deleted successfully' });
+                    }
+                });
+            } else {
+                console.log('[v] Document not found');
+                like_likecollection.insertOne({ post_id: postID, author: author }, (err, result) => {
+                    if (err) {
+                        console.error('[x] Error inserting document:', err);
+                        res.status(500).send({ message: 'Error inserting document: ' + err });
+                    } else {
+                        console.log('[v] Document inserted successfully');
+                        res.send({ message: 'Document inserted successfully' });
+                    }
+                });
+            }
+        }
+    });
+}
+
+const countLike = (req, res) => {
+    const postID = req.params.param;
+    console.log("[>] [services] Count Like :)");
+
+    const database = getDatabase();
+    const like_likecollection = database.collection(process.env.DB_COLLECTION_LIKE);
+
+    like_likecollection.find({ post_id: postID }).toArray((err, document) => {
+        if (err) {
+            console.error('[x] Error finding document:', err);
+            res.status(500).send({ message: 'Error finding document: ' + err });
+        } else {
+            if (document) {
+                console.log('[v] Document found:', document);
+                if (document.length > 0) {
+                    res.send({ message: document.length });
+                }
+                else {
+                    res.send({ message: 0 });
+                }
+            } else {
+                console.log('[x] Document not found');
+                res.status(404).send({ message: 'Document not found' });
+            }
+        }
+    });
+}
+
 const mainService = {
     home: home,
     helloworld: helloworld,
     feeds: feeds,
     submit: submit,
     post: post,
+    deletePost: deletePost,
     submitComment: submitComment,
-    getComment: getComment
+    getComment: getComment,
+    deleteComment: deleteComment,
+    like: like,
+    countLike: countLike
 };
 
 module.exports = mainService;
