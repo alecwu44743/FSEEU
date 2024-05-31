@@ -41,4 +41,10 @@ router.get(
     mainService.countLike
 )
 
+router.post(
+    "/d/comment/:param",
+    [authJwt.verifyToken, verifyPost.checkAuthor],
+    mainService.deleteComment
+)
+
 module.exports = router;
