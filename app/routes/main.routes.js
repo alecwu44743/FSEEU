@@ -21,13 +21,24 @@ router.get(
 
 router.post(
     "/comment/:param",
-    [authJwt.verifyToken, verifyPost.checkCommentAuthor],
+    [authJwt.verifyToken, verifyPost.checkAuthor],
     mainService.submitComment
 )
 
 router.get(
     "/comments/:param",
     mainService.getComment
+)
+
+router.post(
+    "/like/:param",
+    [authJwt.verifyToken, verifyPost.checkAuthor],
+    mainService.like
+)
+
+router.get(
+    "/numlike/:param",
+    mainService.countLike
 )
 
 module.exports = router;

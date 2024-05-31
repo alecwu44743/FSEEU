@@ -2,7 +2,7 @@ const { ObjectId } = require('mongodb');
 const { connectDatabase, getDatabase } = require("../models");
 
 
-const checkCommentAuthor = (req, res, next) => {
+const checkAuthor = (req, res, next) => {
     console.log("[>] [services] Check comment's author :)");
 
     let authHeader = req.headers.authorization;
@@ -34,7 +34,7 @@ const checkCommentAuthor = (req, res, next) => {
 
 
 const verifyPost = {
-    checkCommentAuthor: checkCommentAuthor
+    checkAuthor: checkAuthor
 };
 
 module.exports = verifyPost;
