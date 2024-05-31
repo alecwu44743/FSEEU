@@ -201,7 +201,9 @@ const mainService = {
     submit: submit,
     post: post,
     submitComment: submitComment,
-    getComment: getComment
+    getComment: getComment,
+    like: like,
+    countLike: countLike
 };
 
 module.exports = mainService;
