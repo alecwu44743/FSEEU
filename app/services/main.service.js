@@ -125,6 +125,75 @@ const getComment = (req, res) => {
     });
 }
 
+const like = (req, res) => {
+    const postID = req.params.param;
+    console.log("[>] [services] Like :)");
+
+    const database = getDatabase();
+    const like_likecollection = database.collection(process.env.DB_COLLECTION_LIKE);
+
+    const author = req.body.author;
+
+    like_likecollection.findOne({ post_id: postID, author: author }, (err, document) => {
+        if (err) {
+            console.error('[x] Error finding document:', err);
+            res.status(500).send({ message: 'Error finding document: ' + err });
+        } else {
+            if (document) {
+                console.log('[v] Document found:', document);
+                like_likecollection.deleteOne({ post_id: postID, author: author }, (err, result) => {
+                    if (err) {
+                        console.error('[x] Error deleting document:', err);
+                        res.status(500).send({ message: 'Error deleting document: ' + err });
+                    } else {
+                        console.log('[v] Document deleted successfully');
+                        res.send({ message: 'Document deleted successfully' });
+                    }
+                });
+            } else {
+                console.log('[v] Document not found');
+                like_likecollection.insertOne({ post_id: postID, author: author }, (err, result) => {
+                    if (err) {
+                        console.error('[x] Error inserting document:', err);
+                        res.status(500).send({ message: 'Error inserting document: ' + err });
+                    } else {
+                        console.log('[v] Document inserted successfully');
+                        res.send({ message: 'Document inserted successfully' });
+                    }
+                });
+            }
+        }
+    });
+}
+
+const countLike = (req, res) => {
+    const postID = req.params.param;
+    console.log("[>] [services] Count Like :)");
+
+    const database = getDatabase();
+    const like_likecollection = database.collection(process.env.DB_COLLECTION_LIKE);
+
+    like_likecollection.find({ post_id: postID }).toArray((err, document) => {
+        if (err) {
+            console.error('[x] Error finding document:', err);
+            res.status(500).send({ message: 'Error finding document: ' + err });
+        } else {
+            if (document) {
+                console.log('[v] Document found:', document);
+                if (document.length > 0) {
+                    res.send({ message: document.length });
+                }
+                else {
+                    res.send({ message: 0 });
+                }
+            } else {
+                console.log('[x] Document not found');
+                res.status(404).send({ message: 'Document not found' });
+            }
+        }
+    });
+}
+
 const mainService = {
     home: home,
     helloworld: helloworld,
