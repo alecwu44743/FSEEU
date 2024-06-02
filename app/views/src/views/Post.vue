@@ -12,7 +12,7 @@
 
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">檢舉</a></li>
-                            <li v-if= "(username== post_author)|| isModerator"><a class="dropdown-item" @click="showDeleteWarning">刪除</a></li>
+                            <li v-if= "username== post_author"><a class="dropdown-item" @click="showDeleteWarning('貼文', '')">刪除</a></li>
                         </ul>
                     </span>
                 </div>
@@ -43,6 +43,16 @@
                             </span>
                             <span class= "commentsDate">
                                 {{ item.date }}
+                            </span>
+                            <span class="dropdownComment">
+                                <a class="btn btn-secondary dropdown-toggleComment no-caret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    . . .
+                                </a>
+
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">檢舉</a></li>
+                                    <li v-if= "(username== item.author)|| isModerator"><a class="dropdown-item" @click="showDeleteWarning('留言', item.comment_id)">刪除</a></li>
+                                </ul>
                             </span>
                             <div class= "commentLog">
                                 {{ item.commentLog }}
@@ -83,6 +93,7 @@ export default{
     },
     methods: {
         async refreshData() {
+            // 取得貼文資料
             axios.get(`${API_URL}/post/${this.$route.params.param}`)
             .then((response)=> {
                 this.postInfo= {
@@ -97,9 +108,12 @@ export default{
                 };
                 this.post_author= this.postInfo.author;
             });
+
+            // 取得留言資料
             axios.get(`${API_URL}/comments/${this.$route.params.param}`)
             .then((response)=> {
                     this.comments = response.data.map(item => ({
+                    comment_id: item._id,
                     author: item.author,
                     commentLog: item.content,
                     date: item.date.substring(0, 10)
@@ -112,6 +126,7 @@ export default{
                 comment: this.comment
             };
 
+            // 發布留言
             axios({
                 method: 'post',
                 url: `http://localhost:8000/comment/${this.$route.params.param}`,
@@ -124,6 +139,8 @@ export default{
                 location.reload();
             })
         },
+
+        // 取得使用者以及判斷是否是管理員
         getUser(){
             if(localStorage.getItem("authTokenUsername")){
                 if(localStorage.getItem("authTokenRoles")== "moderator"){
@@ -133,12 +150,20 @@ export default{
                 this.isLoggedIn= true;
             }
         },
-        showDeleteWarning(){
-            if (confirm('確定要刪除嗎？')) {
-                this.deletePost();
+        showDeleteWarning(deleteType, commentID){
+            if(deleteType== "貼文"){
+                if (confirm('確定要刪除嗎？')) {
+                    this.deletePost();
+                }
+            }
+            else if(deleteType== "留言"){
+                if (confirm('確定要刪除嗎？')) {
+                    this.deleteComment(commentID);
+                }
             }
         },
         deletePost(){
+            // 刪除貼文
             axios({
                 method: 'post',
                 url: `http://localhost:8000/d/post/${this.$route.params.param}`,
@@ -152,6 +177,23 @@ export default{
             })
             .then(res=> {
                 window.location.href= "/";
+            })
+        },
+        deleteComment(commentID){
+            // 刪除留言
+            axios({
+                method: 'post',
+                url: `http://localhost:8000/d/comment/${commentID}`,
+                data: {
+                    author: this.username,
+                    isModerator: this.isModerator
+                },
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authTokenAccessToken')}`,
+                }
+            })
+            .then(res=> {
+                window.location.href= `/post/${this.$route.params.param}`;
             })
         }
     },
@@ -278,5 +320,21 @@ export default{
 
 .no-caret::after {
     display: none !important; /* 移除下拉箭頭 */
+}
+
+.dropdown-toggleComment {
+    background-color: transparent;
+    border: none;
+    color: black; /* 文字顏色，可以根據需要修改 */
+    transform: scale(0.7);
+    margin-bottom: 10px;
+}
+
+.dropdown-toggleComment:hover,
+.dropdown-toggleComment:focus,
+.dropdown-toggleComment:active {
+    background-color: transparent;
+    border: none;
+    color: black; /* 文字顏色在hover時保持不變 */
 }
 </style>
