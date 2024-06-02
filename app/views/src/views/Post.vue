@@ -12,7 +12,7 @@
 
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">檢舉</a></li>
-                            <li v-if= "username== post_author"><a class="dropdown-item" @click="showDeleteWarning">刪除</a></li>
+                            <li v-if= "(username== post_author)|| isModerator"><a class="dropdown-item" @click="showDeleteWarning">刪除</a></li>
                         </ul>
                     </span>
                 </div>
