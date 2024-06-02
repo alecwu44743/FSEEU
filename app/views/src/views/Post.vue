@@ -12,7 +12,7 @@
 
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">檢舉</a></li>
-                            <li v-if= "username== post_author"><a class="dropdown-item" @click="showDeleteWarning('貼文', '')">刪除</a></li>
+                            <li v-if= "(username== item.author)|| isModerator"><a class="dropdown-item" @click="showDeleteWarning('貼文', '')">刪除</a></li>
                         </ul>
                     </span>
                 </div>
@@ -51,7 +51,7 @@
 
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="#">檢舉</a></li>
-                                    <li v-if= "(username== item.author)|| isModerator"><a class="dropdown-item" @click="showDeleteWarning('留言', item.comment_id)">刪除</a></li>
+                                    <li v-if= "username== item.author"><a class="dropdown-item" @click="showDeleteWarning('留言', item.comment_id)">刪除</a></li>
                                 </ul>
                             </span>
                             <div class= "commentLog">
