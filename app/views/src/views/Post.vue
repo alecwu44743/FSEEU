@@ -5,6 +5,11 @@
                 <div class= "cd">
                     <span class= "college">{{ postInfo.college }} | </span>
                     <span class= "department">{{ postInfo.department }}</span>
+                    <span class= "heart_layout">
+                        <button v-if= "isLiked" class="redHeart" @click="likePost()"/>
+                        <button v-else class="grayHeart" @click="likePost()"/>
+                        <div class= "numLikes">{{ numLikes }}</div>
+                    </span>
                     <span class="dropdownPost">
                         <a class="btn btn-secondary dropdown-togglePost no-caret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             . . .
@@ -88,7 +93,9 @@ export default{
             username: "",
             post_author: "",
             comment: "",
-            comments: []
+            comments: [],
+            numLikes: 0,
+            isLiked: false,
         }
     },
     methods: {
@@ -119,6 +126,15 @@ export default{
                     date: item.date.substring(0, 10)
                 }));
             });
+
+            // 取得讚數
+            axios.get(`${API_URL}/numlike/${this.$route.params.param}`)
+            .then(response =>{
+                this.numLikes= response.data.message;
+                if(response.data.authors){
+                    this.isLiked= response.data.authors.includes(this.username);
+                }
+            })
         },
         submitComment(){
             const commentInfo= {
@@ -187,6 +203,22 @@ export default{
                 data: {
                     author: this.username,
                     isModerator: this.isModerator
+                },
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authTokenAccessToken')}`,
+                }
+            })
+            .then(res=> {
+                window.location.href= `/post/${this.$route.params.param}`;
+            })
+        },
+        likePost(){
+            // 貼文按愛心
+            axios({
+                method: 'post',
+                url: `http://localhost:8000/like/${this.$route.params.param}`,
+                data: {
+                    author: this.username,
                 },
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('authTokenAccessToken')}`,
@@ -302,6 +334,7 @@ export default{
 
 .dropdownPost {
     float: right;
+    margin-right: 5px;
 }
 
 .dropdown-togglePost {
@@ -336,5 +369,77 @@ export default{
     background-color: transparent;
     border: none;
     color: black; /* 文字顏色在hover時保持不變 */
+}
+
+.heart_layout {
+    display: flex;
+    float: right;
+    align-items: center;
+    margin-top: 13px;
+}
+
+.redHeart {
+    width: 12px;
+    height: 12px;
+    margin: auto;
+    background-color: red;
+    border: none; /* 移除边框 */
+    padding: 0; /* 移除内边距 */
+    cursor: pointer; /* 设置鼠标悬停时的指针样式 */
+
+    &::before,&::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        content: "";
+        background-color: red;
+        border-radius: 100%;
+    }
+    
+    &::before {
+        transform: translateX(-50%);
+    }
+    &::after {
+        transform: translateY(-50%);
+    }
+    
+    transform: rotate(45deg);
+}
+
+.grayHeart {
+    width: 12px;
+    height: 12px;
+    margin: auto;
+    background-color: gray;
+    border: none; /* 移除边框 */
+    padding: 0; /* 移除内边距 */
+    cursor: pointer; /* 设置鼠标悬停时的指针样式 */
+
+    &::before,&::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        content: "";
+        background-color: gray;
+        border-radius: 100%;
+    }
+    
+    &::before {
+        transform: translateX(-50%);
+    }
+    &::after {
+        transform: translateY(-50%);
+    }
+    
+    transform: rotate(45deg);
+}
+
+.numLikes {
+    margin-left: 10px;
+    margin-right: 8px;
 }
 </style>
