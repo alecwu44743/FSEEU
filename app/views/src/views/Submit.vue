@@ -53,6 +53,7 @@ export default {
                 teacher: this.teacher,
                 title: this.title,
                 content: this.content,
+                author: localStorage.getItem("authTokenUsername")
             };
 
             axios({
