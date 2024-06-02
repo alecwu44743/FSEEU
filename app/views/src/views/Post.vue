@@ -5,6 +5,16 @@
                 <div class= "cd">
                     <span class= "college">{{ postInfo.college }} | </span>
                     <span class= "department">{{ postInfo.department }}</span>
+                    <span class="dropdownPost">
+                        <a class="btn btn-secondary dropdown-togglePost no-caret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            . . .
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">檢舉</a></li>
+                            <li v-if= "username== post_author"><a class="dropdown-item" @click="showDeleteWarning">刪除</a></li>
+                        </ul>
+                    </span>
                 </div>
                 <div class= "tctd">
                     <div class= "ttitle">{{ postInfo.title }}</div>
@@ -64,7 +74,9 @@ export default{
                 date: ""
             },
             isLoggedIn: false,
-            author: localStorage.getItem("authTokenUsername"),
+            isModerator: false,
+            username: "",
+            post_author: "",
             comment: "",
             comments: []
         }
@@ -80,8 +92,10 @@ export default{
                     teacher: response.data.teacher,
                     title: response.data.title,
                     content: response.data.content,
+                    author: response.data.author,
                     date: response.data.date.substring(0, 10)
-                }
+                };
+                this.post_author= this.postInfo.author;
             });
             axios.get(`${API_URL}/comments/${this.$route.params.param}`)
             .then((response)=> {
@@ -112,10 +126,34 @@ export default{
         },
         getUser(){
             if(localStorage.getItem("authTokenUsername")){
+                if(localStorage.getItem("authTokenRoles")== "moderator"){
+                    this.isModerator= true;
+                }
                 this.username= localStorage.getItem("authTokenUsername");
                 this.isLoggedIn= true;
             }
         },
+        showDeleteWarning(){
+            if (confirm('確定要刪除嗎？')) {
+                this.deletePost();
+            }
+        },
+        deletePost(){
+            axios({
+                method: 'post',
+                url: `http://localhost:8000/d/post/${this.$route.params.param}`,
+                data: {
+                    author: this.username,
+                    isModerator: this.isModerator
+                },
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authTokenAccessToken')}`,
+                }
+            })
+            .then(res=> {
+                window.location.href= "/";
+            })
+        }
     },
     mounted: function() {
         this.refreshData();
@@ -155,7 +193,7 @@ export default{
 
 .cd {
     border-bottom: 1px solid #ddd; /* 添加分割線 */
-    padding-bottom: 10px; /* 分割線上方的間距 */
+    padding-bottom: 15px; /* 分割線上方的間距 */
 }
 
 .course{
@@ -218,5 +256,27 @@ export default{
     float: right;
     color: gray;
     padding-top: 8px;
+}
+
+.dropdownPost {
+    float: right;
+}
+
+.dropdown-togglePost {
+    background-color: transparent;
+    border: none;
+    color: black; /* 文字顏色，可以根據需要修改 */
+}
+
+.dropdown-togglePost:hover,
+.dropdown-togglePost:focus,
+.dropdown-togglePost:active {
+    background-color: transparent;
+    border: none;
+    color: black; /* 文字顏色在hover時保持不變 */
+}
+
+.no-caret::after {
+    display: none !important; /* 移除下拉箭頭 */
 }
 </style>
