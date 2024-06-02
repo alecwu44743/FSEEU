@@ -254,8 +254,12 @@ const countLike = (req, res) => {
         } else {
             if (document) {
                 console.log('[v] Document found:', document);
+                const authors = document.map(doc => doc.author);
                 if (document.length > 0) {
-                    res.send({ message: document.length });
+                    res.send({
+                        message: document.length,
+                        authors: authors
+                    });
                 }
                 else {
                     res.send({ message: 0 });
